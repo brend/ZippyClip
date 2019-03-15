@@ -25,7 +25,7 @@
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <ListBox ItemsSource="{Binding Path=ClipboardHistory}" SelectedItem="{Binding Path=SelectedItem}" MouseDoubleClick="ListBox_MouseDoubleClick" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" Background="#FF272727" MouseUp="ListBox_MouseUp">
+        <ListBox ItemsSource="{Binding Path=ClipboardHistory}" SelectedItem="{Binding Path=SelectedItem}" MouseDoubleClick="ListBox_MouseDoubleClick" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" Background="#FF272727">
         </ListBox>
     </Grid>
 </Window>
