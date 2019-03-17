@@ -4,7 +4,7 @@
     using System.Windows;
     using System.Windows.Media.Imaging;
 
-    public abstract class Item
+    public abstract class Item: IEquatable<Item>
     {
         public static Item MakeFromClipboard()
         {
@@ -38,13 +38,21 @@
             return new ImageItem(bitmapSource);
         }
 
-        protected abstract void CopyContentsToClipboard();
+        protected abstract void CopyContentsToClipboard(IDataObject data);
 
         public void CopyToClipboard()
         {
-            ClipboardNotification.Suspend();
+            var data = new DataObject();
 
-            CopyContentsToClipboard();
+            data.SetData(ClipboardNotification.ClipboardIgnoreFormat, 0);
+            
+            CopyContentsToClipboard(data);
+
+            Clipboard.SetDataObject(data);
         }
+
+        public override abstract int GetHashCode();
+
+        public abstract bool Equals(Item other);
     }
 }

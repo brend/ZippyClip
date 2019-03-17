@@ -12,14 +12,24 @@
         
         public BitmapSource Image { get; }
 
-        protected override void CopyContentsToClipboard()
+        protected override void CopyContentsToClipboard(IDataObject data)
         {
-            Clipboard.SetImage(Image);
+            data.SetData(DataFormats.Bitmap, Image);
         }
 
         public override string ToString()
         {
             return "<Image data>";
+        }
+
+        public override int GetHashCode()
+        {
+            return Image.GetHashCode();
+        }
+
+        public override bool Equals(Item other)
+        {
+            return other is ImageItem i && Image.Equals(i.Image);
         }
     }
 }

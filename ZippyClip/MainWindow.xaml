@@ -6,21 +6,33 @@
         xmlns:local="clr-namespace:ZippyClip"
         xmlns:items="clr-namespace:ZippyClip.Items"
         mc:Ignorable="d"
-        Title="ZippyClip" Height="450" Width="285" Background="White" WindowStyle="ToolWindow">
+        Title="ZippyClip" Height="450" Width="285" Background="White" WindowStyle="ToolWindow" Loaded="Window_Loaded">
     <Window.Resources>
         <DataTemplate DataType="{x:Type items:ImageItem}">
-            <Border Margin="3" Padding="6" BorderBrush="DarkGray" Background="GhostWhite" CornerRadius="6" MaxHeight="150">
-                <Image Source="{Binding Image}" HorizontalAlignment="Left" />
+            <Border Margin="3" Padding="6" BorderBrush="DarkGray" Background="GhostWhite" CornerRadius="6" Height="64">
+                <StackPanel Orientation="Horizontal">
+                    <Button Click="ButtonCopyItem_Click" Width="16" Height="32" Margin="2" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Image Source="Resources/copy-document-small.png" StretchDirection="DownOnly" SnapsToDevicePixels="True" />
+                    </Button>
+                    <Button Click="ButtonPreviewItem_Click" Width="16" Height="32" Margin="2" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Image Source="Resources/magnifying-glass-small.png" StretchDirection="DownOnly" SnapsToDevicePixels="True" />
+                    </Button>
+                    <Image Source="{Binding Image}" HorizontalAlignment="Left" />
+                </StackPanel>
             </Border>
         </DataTemplate>
         <DataTemplate DataType="{x:Type items:TextItem}">
             <Border Margin="3" Padding="6" MaxHeight="150" BorderBrush="DarkGray" Background="GhostWhite" CornerRadius="6">
-                <TextBlock Text="{Binding Text}" />
+               <TextBlock Text="{Binding Text}" />
             </Border>
         </DataTemplate>
         <DataTemplate DataType="{x:Type items:UriItem}">
             <Border Margin="3" Padding="6" MaxHeight="150" BorderBrush="DarkGray" Background="GhostWhite" CornerRadius="6">
-                <TextBlock Text="{Binding Uri}" />
+                <TextBlock>
+                    <Hyperlink NavigateUri="{Binding Uri}" RequestNavigate="Hyperlink_RequestNavigate">
+                        <TextBlock Text="{Binding Uri}" />
+                    </Hyperlink>
+                </TextBlock>
             </Border>
         </DataTemplate>
     </Window.Resources>

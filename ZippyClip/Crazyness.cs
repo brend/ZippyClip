@@ -1,29 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace ZippyClip
+﻿namespace ZippyClip
 {
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Windows.Forms;
+    
     /// <summary>
     /// Provides notifications when the contents of the clipboard is updated.
     /// </summary>
     public sealed class ClipboardNotification
     {
+        public const string ClipboardIgnoreFormat = "Clipboard Viewer Ignore";
+
+        static ClipboardNotification()
+        {
+            NativeMethods.RegisterClipboardFormat(ClipboardIgnoreFormat);
+        }
+
         /// <summary>
         /// Occurs when the contents of the clipboard is updated.
         /// </summary>
         public static event EventHandler ClipboardUpdate;
-
-        private static int SuspensionCount { get; set; }
-
-        public static void Suspend()
-        {
-            SuspensionCount = 2;
-        }
 
         private static NotificationForm _form = new NotificationForm();
 
@@ -55,14 +51,7 @@ namespace ZippyClip
             {
                 if (m.Msg == NativeMethods.WM_CLIPBOARDUPDATE)
                 {
-                    if (SuspensionCount == 0)
-                    {
-                        OnClipboardUpdate(null);
-                    }
-                    else
-                    {
-                        SuspensionCount -= 1;
-                    }
+                    OnClipboardUpdate(null);
                 }
                 base.WndProc(ref m);
             }
@@ -84,5 +73,8 @@ namespace ZippyClip
         // See http://msdn.microsoft.com/en-us/library/ms649033%28VS.85%29.aspx
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern uint RegisterClipboardFormat(string lpszFormat);
     }
 }

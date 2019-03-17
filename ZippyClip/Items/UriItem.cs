@@ -12,9 +12,19 @@
 
         public Uri Uri { get; }
 
-        protected override void CopyContentsToClipboard()
+        protected override void CopyContentsToClipboard(IDataObject data)
         {
-            Clipboard.SetText(Uri.ToString());
+            data.SetData(DataFormats.Text, Uri.ToString());
+        }
+
+        public override int GetHashCode()
+        {
+            return Uri.GetHashCode();
+        }
+
+        public override bool Equals(Item other)
+        {
+            return other is UriItem u && Uri.Equals(u.Uri);
         }
     }
 }
