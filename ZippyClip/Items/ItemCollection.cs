@@ -13,8 +13,6 @@ namespace ZippyClip.Items
         public ObservableCollection<Item> Items { get; } = 
             new ObservableCollection<Item>(new List<Item>());
 
-        private HashSet<Item> HashedItems { get; } = new HashSet<Item>();
-
         public void Push(Item item)
         {
             if (item == null)
