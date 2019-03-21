@@ -4,10 +4,12 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
+    using System.Linq;
     using System.Runtime.InteropServices;
     using System.Windows;
     using System.Windows.Controls;
     using Items;
+    using ZippyClip.Hotkeys;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -40,10 +42,25 @@
 
         private void ListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            CopySelectedItemToClipboard();
+        }
+
+        private void CopySelectedItemToClipboard()
+        {
             if (SelectedItem == null)
                 return;
 
             SelectedItem.CopyToClipboard();
+        }
+
+        private void CopyItemToClipboard(int index)
+        {
+            if (index < 0 || index >= ClipboardHistory.Count)
+                return;
+
+            var item = ClipboardHistory[index];
+
+            item.CopyToClipboard();
         }
 
         private void ButtonUri_Click(object sender, RoutedEventArgs e)
@@ -57,13 +74,18 @@
             RegisterHotkeys();            
         }
 
-        HotKeyRegister hk1;
-
         private void RegisterHotkeys()
         {
-            //hk1 = new HotKeyRegister(ClipboardNotification.NotificationWindowHandle, 1, KeyModifiers.Windows | KeyModifiers.Control, System.Windows.Forms.Keys.D1);
+            foreach (int i in Enumerable.Range(0, 3))
+            {
+                var hk = new HotkeyHandler(i, KeyModifiers.Shift, System.Windows.Forms.Keys.D1 + i);
 
-            //hk1.HotKeyPressed += delegate { MessageBox.Show("hk 1 has been pressed"); };
+                hk.Pressed += delegate 
+                {
+                    CopyItemToClipboard(i);
+                    System.Windows.Forms.SendKeys.SendWait("^v");
+                };
+            }
         }
 
         private void ButtonCopyItem_Click(object sender, RoutedEventArgs e)
