@@ -1,4 +1,6 @@
-﻿namespace ZippyClip.Hotkeys
+﻿#nullable enable
+
+namespace ZippyClip.Hotkeys
 {
     public struct HotkeyId
     {

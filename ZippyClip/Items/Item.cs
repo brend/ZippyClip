@@ -1,4 +1,6 @@
-﻿namespace ZippyClip.Items
+﻿#nullable enable
+
+namespace ZippyClip.Items
 {
     using System;
     using System.Windows;
@@ -6,7 +8,7 @@
 
     public abstract class Item: IEquatable<Item>
     {
-        public static Item MakeFromClipboard()
+        public static Item? MakeFromClipboard()
         {
             if (Clipboard.ContainsText())
             {

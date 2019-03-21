@@ -1,4 +1,6 @@
-﻿namespace ZippyClip
+﻿#nullable enable
+
+namespace ZippyClip
 {
     using System;
     using System.Collections.Generic;
@@ -84,7 +86,7 @@
             {
                 if (m.Msg == NativeMethods.WM_CLIPBOARDUPDATE)
                 {
-                    OnClipboardUpdate(null);
+                    OnClipboardUpdate(EventArgs.Empty);
                 }
                 if (m.Msg == HotKeyRegister.WM_HOTKEY)
                 {

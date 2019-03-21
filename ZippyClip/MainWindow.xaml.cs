@@ -1,14 +1,14 @@
-﻿namespace ZippyClip
+﻿#nullable enable
+
+namespace ZippyClip
 {
+    using Items;
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.Linq;
-    using System.Runtime.InteropServices;
     using System.Windows;
     using System.Windows.Controls;
-    using Items;
     using ZippyClip.Hotkeys;
 
     /// <summary>
@@ -38,7 +38,7 @@
         public ObservableCollection<Item> ClipboardHistory =>
             ClipboardItems.Items;
 
-        public Item SelectedItem { get; set; }
+        public Item? SelectedItem { get; set; }
 
         private void ListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

@@ -1,4 +1,6 @@
-﻿namespace ZippyClip
+﻿#nullable enable
+
+namespace ZippyClip
 {
     using System;
     using System.Runtime.InteropServices;

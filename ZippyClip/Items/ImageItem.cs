@@ -1,4 +1,6 @@
-﻿namespace ZippyClip.Items
+﻿#nullable enable
+
+namespace ZippyClip.Items
 {
     using System.Windows;
     using System.Windows.Media.Imaging;
