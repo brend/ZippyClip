@@ -82,6 +82,7 @@ namespace ZippyClip
 
                 hk.Pressed += delegate 
                 {
+                    System.Threading.Thread.Sleep(10);
                     CopyItemToClipboard(i);
                     System.Windows.Forms.SendKeys.SendWait("^v");
                 };
@@ -120,6 +121,13 @@ namespace ZippyClip
                 return;
 
             Console.WriteLine("Preview " + item);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+
+            Hide();
         }
     }
 }

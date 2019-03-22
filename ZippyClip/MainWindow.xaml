@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:ZippyClip"
         xmlns:items="clr-namespace:ZippyClip.Items"
         mc:Ignorable="d"
-        Title="ZippyClip" Height="450" Width="285" Background="White" WindowStyle="ToolWindow" Loaded="Window_Loaded">
+        Title="ZippyClip" Height="450" Width="285" Background="White" WindowStyle="ToolWindow" Loaded="Window_Loaded"
+        Topmost="True"
+        Closing="Window_Closing">
     <Window.Resources>
         <DataTemplate DataType="{x:Type items:ImageItem}">
             <Border Margin="3" Padding="6" BorderBrush="DarkGray" Background="GhostWhite" CornerRadius="6" Height="64">
