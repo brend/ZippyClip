@@ -3,11 +3,31 @@
 namespace ZippyClip.Items
 {
     using System;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Media.Imaging;
 
-    public abstract class Item: IEquatable<Item>
+    public abstract class Item: IEquatable<Item>, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private int listIndex;
+
+        public int ListIndex
+        {
+            get => listIndex;
+            set
+            {
+                listIndex = value;
+                OnPropertyChanged("ListIndex");
+            }
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public static Item? MakeFromClipboard()
         {
             if (Clipboard.ContainsText())

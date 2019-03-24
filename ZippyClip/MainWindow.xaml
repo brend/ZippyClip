@@ -15,18 +15,21 @@
         AllowsTransparency="True"
         Background="Transparent"
         >
-    <Window.InputBindings>
-        <KeyBinding Command="{Binding QuitAppCommand}" Key="Q" Modifiers="Ctrl" />
-    </Window.InputBindings>
     <Window.Resources>
         <DataTemplate DataType="{x:Type items:ImageItem}">
             <Border Margin="3" Padding="6" Background="Lavender" CornerRadius="6" Height="64">
-                <Image Source="{Binding Image}" HorizontalAlignment="Left" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ListIndex}" Foreground="DarkGray" FontWeight="Bold" Padding="1,0,4,0" />
+                    <Image Source="{Binding Image}" HorizontalAlignment="Left" />
+                </StackPanel>
             </Border>
         </DataTemplate>
         <DataTemplate DataType="{x:Type items:TextItem}">
             <Border Margin="3" Padding="6" MaxHeight="150" Background="Lavender" CornerRadius="6">
-               <TextBlock Text="{Binding Text}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ListIndex}" Foreground="DarkGray" FontWeight="Bold" Padding="1,0,4,0" />
+                    <TextBlock Text="{Binding Text}" />
+                </StackPanel>
             </Border>
         </DataTemplate>
         <DataTemplate DataType="{x:Type items:UriItem}">

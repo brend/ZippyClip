@@ -29,6 +29,11 @@ namespace ZippyClip
         private void PutClipboardContentsInList()
         {
             ClipboardItems.PushClipboardContents();
+
+            for (int i = 0; i < ClipboardItems.Items.Count; ++i)
+            {
+                ClipboardItems.Items[i].ListIndex = i + 1;
+            }
         }
 
         private ClipboardItemCollection ClipboardItems = new ClipboardItemCollection();
