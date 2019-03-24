@@ -9,6 +9,7 @@ namespace ZippyClip
     using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
     using ZippyClip.Hotkeys;
 
     public partial class MainWindow : Window
@@ -164,17 +165,44 @@ namespace ZippyClip
             Hide();
         }
 
-        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
-                case System.Windows.Input.Key.Return:
+                case Key.Return:
                     CopySelectedItemToClipboard();
                     HideAndPaste();
+                    break;
+                case Key.Escape:
+                    Hide();
+                    break;
+                case Key.Q when Keyboard.Modifiers == ModifierKeys.Control:
+                    Application.Current.Shutdown();
+                    break;
+                case Key k when k >= Key.D1 && k <= Key.D9:
+                    if (SelectItem(k - Key.D1))
+                    {
+                        CopySelectedItemToClipboard();
+                        HideAndPaste();
+                    }
                     break;
                 default:
                     break;
             }
+        }
+
+        private bool SelectItem(int index)
+        {
+            if (index < 0 || index >= listClipboardItems.Items.Count)
+                return false;
+
+            listClipboardItems.SelectedIndex = index;
+
+            return true;
+        }
+
+        private void Window_LostFocus(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
