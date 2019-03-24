@@ -6,14 +6,11 @@ namespace ZippyClip
     using System;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
-    using System.Linq;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
     using ZippyClip.Hotkeys;
 
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -50,7 +47,22 @@ namespace ZippyClip
             if (SelectedItem == null)
                 return;
 
+            Console.WriteLine("Copied to clipboard: " + SelectedItem);
+
             SelectedItem.CopyToClipboard();
+        }
+
+        private void HideAndPaste()
+        {
+            Hide();
+
+            ThreadPool.QueueUserWorkItem(sleepAndPaste);
+
+            void sleepAndPaste(object userState)
+            {
+                Thread.Sleep(100);
+                System.Windows.Forms.SendKeys.SendWait("^v");
+            }
         }
 
         private void CopyItemToClipboard(int index)
@@ -71,22 +83,44 @@ namespace ZippyClip
         {
             ClipboardNotification.ClipboardUpdate += ClipboardNotification_ClipboardUpdate;
 
-            RegisterHotkeys();            
+            RegisterHotkeys();
+            Hide();
         }
 
         private void RegisterHotkeys()
         {
-            foreach (int i in Enumerable.Range(0, 3))
-            {
-                var hk = new HotkeyHandler(i, KeyModifiers.Shift, System.Windows.Forms.Keys.D1 + i);
+            var hk = new HotkeyHandler(1, KeyModifiers.Alt | KeyModifiers.Control, System.Windows.Forms.Keys.V);
 
-                hk.Pressed += delegate 
-                {
-                    System.Threading.Thread.Sleep(10);
-                    CopyItemToClipboard(i);
-                    System.Windows.Forms.SendKeys.SendWait("^v");
-                };
+            hk.Pressed += delegate
+            {
+                WakeUp();
+            };
+        }
+
+        private void WakeUp()
+        {
+            CenterWindow();
+            Show();
+            FocusOnList();
+        }
+
+        private void FocusOnList()
+        {
+            listClipboardItems.Focus();
+
+            if (listClipboardItems.Items.Count > 0)
+            {
+                listClipboardItems.SelectedIndex = 0;
             }
+        }
+
+        private void CenterWindow()
+        {
+            var screenHeight = SystemParameters.PrimaryScreenHeight;
+            var screenWidth = SystemParameters.PrimaryScreenWidth;
+
+            Left = (screenWidth - Width) / 2;
+            Top = (screenHeight - Height) / 2;
         }
 
         private void ButtonCopyItem_Click(object sender, RoutedEventArgs e)
@@ -128,6 +162,19 @@ namespace ZippyClip
             e.Cancel = true;
 
             Hide();
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case System.Windows.Input.Key.Return:
+                    CopySelectedItemToClipboard();
+                    HideAndPaste();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

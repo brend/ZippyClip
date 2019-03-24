@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         Title="ZippyClip" Height="450" Width="285" Background="White" WindowStyle="ToolWindow" Loaded="Window_Loaded"
         Topmost="True"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        KeyDown="Window_KeyDown">
     <Window.Resources>
         <DataTemplate DataType="{x:Type items:ImageItem}">
             <Border Margin="3" Padding="6" BorderBrush="DarkGray" Background="GhostWhite" CornerRadius="6" Height="64">
@@ -39,7 +40,7 @@
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <ListBox ItemsSource="{Binding Path=ClipboardHistory}" SelectedItem="{Binding Path=SelectedItem}" MouseDoubleClick="ListBox_MouseDoubleClick" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" Background="#FF272727">
+        <ListBox Name="listClipboardItems" ItemsSource="{Binding Path=ClipboardHistory}" SelectedItem="{Binding Path=SelectedItem}" MouseDoubleClick="ListBox_MouseDoubleClick" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" Background="#FF272727">
         </ListBox>
     </Grid>
 </Window>
