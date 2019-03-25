@@ -41,12 +41,16 @@
                 </TextBlock>
             </Border>
         </DataTemplate>
+        <Style x:Key="ListBoxItemStyle1" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
     </Window.Resources>
     <Border CornerRadius="6" Padding="4" Background="LightGray">
         <Grid>
             <ListBox Name="listClipboardItems" 
                  ItemsSource="{Binding Path=ClipboardHistory}" 
                  SelectedItem="{Binding Path=SelectedItem}" 
+                 ItemContainerStyle="{DynamicResource ListBoxItemStyle1}"
                  MouseDoubleClick="ListBox_MouseDoubleClick" 
                  HorizontalContentAlignment="Stretch" 
                  ScrollViewer.CanContentScroll="False" 
