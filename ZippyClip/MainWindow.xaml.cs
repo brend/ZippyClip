@@ -41,6 +41,8 @@ namespace ZippyClip
         public ObservableCollection<Item> ClipboardHistory =>
             ClipboardItems.Items;
 
+        public bool HistoryIsEmpty => true;
+
         public Item? SelectedItem { get; set; }
 
         private void ListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)

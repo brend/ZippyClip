@@ -41,20 +41,24 @@
                 </TextBlock>
             </Border>
         </DataTemplate>
-        <Style x:Key="ListBoxItemStyle1" TargetType="{x:Type ListBoxItem}">
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        </Style>
+        <BooleanToVisibilityConverter x:Key="VisibilityConverter1" />
     </Window.Resources>
     <Border CornerRadius="6" Padding="4" Background="LightGray">
         <Grid>
             <ListBox Name="listClipboardItems" 
                  ItemsSource="{Binding Path=ClipboardHistory}" 
                  SelectedItem="{Binding Path=SelectedItem}" 
-                 ItemContainerStyle="{DynamicResource ListBoxItemStyle1}"
+                 
                  MouseDoubleClick="ListBox_MouseDoubleClick" 
                  HorizontalContentAlignment="Stretch" 
                  ScrollViewer.CanContentScroll="False" 
                  Background="GhostWhite" BorderBrush="{x:Null}" BorderThickness="0" />
+            <TextBlock Text="Add items to the list by copying text or images in other applications" 
+                       Visibility="{Binding Path=HistoryIsEmpty, Converter={StaticResource VisibilityConverter1}}"
+                       Grid.Column="0" 
+                       Grid.Row="0" 
+                       Foreground="Gray"
+                       FontSize="14" />
         </Grid>
     </Border>
 </Window>
