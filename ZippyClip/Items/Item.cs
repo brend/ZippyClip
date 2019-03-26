@@ -37,6 +37,10 @@ namespace ZippyClip.Items
 
             if (Clipboard.ContainsImage())
             {
+                // TODO: Catch exception:
+                /*
+                 * System.Runtime.InteropServices.COMException: "OpenClipboard fehlgeschlagen (Ausnahme von HRESULT: 0x800401D0 (CLIPBRD_E_CANT_OPEN))"
+                 */
                 return Make(Clipboard.GetImage());
             }
 

@@ -41,7 +41,14 @@ namespace ZippyClip
         public ObservableCollection<Item> ClipboardHistory =>
             ClipboardItems.Items;
 
-        public bool HistoryIsEmpty => true;
+        public static readonly DependencyProperty HistoryIsEmptyProperty =
+            DependencyProperty.Register(nameof(HistoryIsEmpty), typeof(bool), typeof(MainWindow), new PropertyMetadata(true));
+
+        public bool HistoryIsEmpty
+        {
+            get => (bool)GetValue(HistoryIsEmptyProperty);
+            set => SetValue(HistoryIsEmptyProperty, value);
+        }
 
         public Item? SelectedItem { get; set; }
 
@@ -90,6 +97,7 @@ namespace ZippyClip
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ClipboardNotification.ClipboardUpdate += ClipboardNotification_ClipboardUpdate;
+            ClipboardHistory.CollectionChanged += delegate { HistoryIsEmpty = ClipboardHistory.Count == 0; };
 
             RegisterHotkeys();
             Hide();
