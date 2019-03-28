@@ -11,9 +11,9 @@ namespace ZippyClip.Items
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private int listIndex;
+        private int? listIndex;
 
-        public int ListIndex
+        public int? ListIndex
         {
             get => listIndex;
             set
@@ -41,7 +41,16 @@ namespace ZippyClip.Items
                 /*
                  * System.Runtime.InteropServices.COMException: "OpenClipboard fehlgeschlagen (Ausnahme von HRESULT: 0x800401D0 (CLIPBRD_E_CANT_OPEN))"
                  */
-                return Make(Clipboard.GetImage());
+                try
+                {
+                    return Make(Clipboard.GetImage());
+                }
+                catch (System.Runtime.InteropServices.COMException e)
+                {
+                    Console.Error.WriteLine(e.Message); // TODO: Log
+
+                    return null;
+                }
             }
 
             return null;
@@ -80,5 +89,11 @@ namespace ZippyClip.Items
         public override abstract int GetHashCode();
 
         public abstract bool Equals(Item other);
+
+        public virtual BitmapSource? GetPreviewImage() => null;
+
+        public virtual string? GetPreviewText() => null;
+
+        public virtual bool SupportsPreview => false;
     }
 }

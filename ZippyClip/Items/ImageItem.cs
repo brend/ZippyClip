@@ -33,5 +33,9 @@ namespace ZippyClip.Items
         {
             return other is ImageItem i && Image.Equals(i.Image);
         }
+
+        public override BitmapSource? GetPreviewImage() => Image;
+
+        public override bool SupportsPreview => true;
     }
 }

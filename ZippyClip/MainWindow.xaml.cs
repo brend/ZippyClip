@@ -32,7 +32,7 @@ namespace ZippyClip
 
             for (int i = 0; i < ClipboardItems.Items.Count; ++i)
             {
-                ClipboardItems.Items[i].ListIndex = i + 1;
+                ClipboardItems.Items[i].ListIndex = (i < 9) ? (i + 1) : (int?)null;
             }
         }
 
@@ -218,6 +218,34 @@ namespace ZippyClip
 
         private void Window_LostFocus(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void ListBoxItem_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if ((sender as ListBoxItem)?.Content is Item item)
+
+            ShowItemPreview(item);
+        }
+
+        private void ShowItemPreview(Item item)
+        {
+            if (!item.SupportsPreview)
+                return;
+
+            PreviewImage.Source = item.GetPreviewImage();
+            PreviewText.Text = item.GetPreviewText();
+
+            PreviewPopup.IsOpen = true;
+        }
+
+        private void HideItemPreview()
+        {
+            PreviewPopup.IsOpen = false;
+        }
+
+        private void Popup_MouseLeave(object sender, MouseEventArgs e)
+        {
+            HideItemPreview();
         }
     }
 }
