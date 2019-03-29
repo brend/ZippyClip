@@ -232,10 +232,6 @@ namespace ZippyClip
             return true;
         }
 
-        private void Window_LostFocus(object sender, RoutedEventArgs e)
-        {
-        }
-
         private void ListBoxItem_MouseEnter(object sender, MouseEventArgs e)
         {
             if ((sender as ListBoxItem)?.Content is Item item)

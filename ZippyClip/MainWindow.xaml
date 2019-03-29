@@ -13,7 +13,6 @@
         Topmost="True"
         Closing="Window_Closing"
         KeyDown="Window_KeyDown"
-        LostFocus="Window_LostFocus"
         MouseDown="TheWindow_MouseDown"
         WindowStyle="None"
         AllowsTransparency="True"
