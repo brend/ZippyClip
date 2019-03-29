@@ -5,18 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZippyClip"
         xmlns:items="clr-namespace:ZippyClip.Items"
+        xmlns:commands="clr-namespace:ZippyClip.Commands"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d"
+        Name="TheWindow"
         Title="ZippyClip" Height="450" Width="450" Loaded="Window_Loaded"
         Topmost="True"
         Closing="Window_Closing"
         KeyDown="Window_KeyDown"
-        LostFocus="Window_LostFocus"
+        MouseDown="TheWindow_MouseDown"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         >
     <Window.Resources>
         <SolidColorBrush x:Key="IndexColor">#606060</SolidColorBrush>
+        
         <DataTemplate DataType="{x:Type items:ImageItem}">
             <Border Margin="3" Padding="6" Background="Lavender" CornerRadius="6" Height="64">
                 <StackPanel Orientation="Horizontal">
@@ -25,42 +29,48 @@
                 </StackPanel>
             </Border>
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type items:TextItem}">
             <Border Margin="3" Padding="6" MaxHeight="150" Background="Lavender" CornerRadius="6">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding ListIndex}" Foreground="{StaticResource IndexColor}" FontWeight="Bold" Padding="1,0,4,0" />
-                    <TextBlock Text="{Binding Text}" TextWrapping="Wrap" />
-                </StackPanel>
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Top" Text="{Binding ListIndex}" Foreground="{StaticResource IndexColor}" FontWeight="Bold" Padding="1,0,4,0" />
+                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Top" Text="{Binding Text}" TextWrapping="Wrap" />
+                </DockPanel>
             </Border>
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type items:UriItem}">
             <Border Margin="3" Padding="6" MaxHeight="150" Background="Lavender" CornerRadius="6">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding ListIndex}" Foreground="{StaticResource IndexColor}" FontWeight="Bold" Padding="1,0,4,0" />
-                    <TextBlock>
-                        <Hyperlink NavigateUri="{Binding Uri}" RequestNavigate="Hyperlink_RequestNavigate">
-                            <TextBlock Text="{Binding Uri}" />
-                        </Hyperlink>
-                    </TextBlock>
-                </StackPanel>
+                <TextBlock>
+                    <Hyperlink NavigateUri="{Binding Uri}" RequestNavigate="Hyperlink_RequestNavigate">
+                        <TextBlock Text="{Binding Uri}" />
+                    </Hyperlink>
+                </TextBlock>
             </Border>
         </DataTemplate>
+        
         <BooleanToVisibilityConverter x:Key="VisibilityConverter1" />
+        
+        <ToolTip x:Key="TrayToolTip">
+            <TextBlock>Show ZippyClip</TextBlock>
+        </ToolTip>
+
+        <commands:ShowMessageCommand x:Key="WakeUpCommand" />
     </Window.Resources>
-    <Border CornerRadius="6" Padding="4" Background="GhostWhite">
+    <Border CornerRadius="6" Padding="4,16,4,4" Background="GhostWhite">
         <Grid>
             <ListBox Name="listClipboardItems" 
                  ItemsSource="{Binding Path=ClipboardHistory}" 
                  SelectedItem="{Binding Path=SelectedItem}" 
-                 
                  MouseDoubleClick="ListBox_MouseDoubleClick" 
                  HorizontalContentAlignment="Stretch"
-                 ScrollViewer.CanContentScroll="False" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                 ScrollViewer.CanContentScroll="False"
                  Background="GhostWhite" BorderBrush="{x:Null}" BorderThickness="0">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
                         <EventSetter Event="MouseEnter" Handler="ListBoxItem_MouseEnter" />
-                        <EventSetter Event="MouseLeave" Handler="ListBoxItem_MouseLeave" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
                                 <ScaleTransform x:Name="transform" />
@@ -81,6 +91,7 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
+            
             <TextBlock Text="Add items to the list by copying text or images in other applications" 
                        Visibility="{Binding Path=HistoryIsEmpty, Converter={StaticResource VisibilityConverter1}}"
                        Grid.Column="0" 
@@ -88,22 +99,36 @@
                        Margin="4"
                        Foreground="{StaticResource IndexColor}"
                        FontSize="14" />
-            <Popup Name="PreviewPopup" Placement="Left" PlacementTarget="{Binding ElementName=listClipboardItems}"
+            
+            <Popup Name="PreviewPopup" Placement="MousePoint" 
                    HorizontalOffset="-50" VerticalOffset="-50" 
-                   PopupAnimation="Scroll" AllowsTransparency="True"
-                   MouseEnter="PreviewPopup_MouseEnter">
+                   PopupAnimation="Scroll" AllowsTransparency="True">
                 <Popup.Style>
                     <Style TargetType="{x:Type Popup}">
                         <EventSetter Event="MouseLeave" Handler="Popup_MouseLeave" />
                     </Style>
                 </Popup.Style>
-                <Border Background="LightGray" CornerRadius="6" Padding="4">
+                <Border Background="HotPink" CornerRadius="6" Padding="4">
                     <StackPanel>
                         <Image Name="PreviewImage" />
                         <TextBlock Name="PreviewText" />
                     </StackPanel>
                 </Border>
             </Popup>
+            
+            <!-- Taskbar icon also accepts the following attributes if needed:
+            ContextMenu="{StaticResource TrayMenu}"
+            TrayPopup="{StaticResource TrayStatusPopup}"
+            -->
+            <tb:TaskbarIcon x:Name="myNotifyIcon"
+                    Visibility="Visible"
+                    ToolTipText="Show ZippyClip"
+                    IconSource="/Resources/appicon.ico"
+                    MenuActivation="LeftOrRightClick"
+                    PopupActivation="DoubleClick"
+                    LeftClickCommand="{StaticResource WakeUpCommand}"
+                    LeftClickCommandParameter="{Binding ElementName=TheWindow}"
+                    TrayToolTip="{StaticResource TrayToolTip}" />
         </Grid>
     </Border>
 </Window>

@@ -39,6 +39,9 @@
     <StartupObject>ZippyClip.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -61,6 +64,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Actions\AlternativeActionPerformer.cs" />
+    <Compile Include="Actions\IActionPerformer.cs" />
+    <Compile Include="Actions\CopyToClipboardAction.cs" />
+    <Compile Include="Commands\WakeUpCommand.cs" />
+    <Compile Include="Windows\Infrastructure.cs" />
+    <Compile Include="Windows\WinApi.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -101,6 +110,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -123,6 +133,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\magnifying-glass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\appicon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

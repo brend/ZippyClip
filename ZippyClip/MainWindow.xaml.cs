@@ -10,7 +10,10 @@ namespace ZippyClip
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using ZippyClip.Actions;
     using ZippyClip.Hotkeys;
+    using static Windows.WinApi;
+    using Screen = System.Windows.Forms.Screen;
 
     public partial class MainWindow : Window
     {
@@ -20,6 +23,10 @@ namespace ZippyClip
 
             DataContext = this;
         }
+
+        public IActionPerformer CopyToClipboardAction { get; } = new CopyToClipboardAction();
+
+        public IActionPerformer AlternativeActionPerformer { get; } = new AlternativeActionPerformer();
 
         private void ClipboardNotification_ClipboardUpdate(object sender, EventArgs e)
         {
@@ -52,19 +59,19 @@ namespace ZippyClip
 
         public Item? SelectedItem { get; set; }
 
-        private void ListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             CopySelectedItemToClipboard();
         }
 
         private void CopySelectedItemToClipboard()
         {
-            if (SelectedItem == null)
-                return;
+            SelectedItem?.PerformAction(CopyToClipboardAction);
+        }
 
-            Console.WriteLine("Copied to clipboard: " + SelectedItem);
-
-            SelectedItem.CopyToClipboard();
+        private void PerformAlternativeActionOnSelectedItem()
+        {
+            SelectedItem?.PerformAction(AlternativeActionPerformer);
         }
 
         private void HideAndPaste()
@@ -78,20 +85,6 @@ namespace ZippyClip
                 Thread.Sleep(100);
                 System.Windows.Forms.SendKeys.SendWait("^v");
             }
-        }
-
-        private void CopyItemToClipboard(int index)
-        {
-            if (index < 0 || index >= ClipboardHistory.Count)
-                return;
-
-            var item = ClipboardHistory[index];
-
-            item.CopyToClipboard();
-        }
-
-        private void ButtonUri_Click(object sender, RoutedEventArgs e)
-        {
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -113,7 +106,7 @@ namespace ZippyClip
             };
         }
 
-        private void WakeUp()
+        public void WakeUp()
         {
             CenterWindow();
             Show();
@@ -130,47 +123,32 @@ namespace ZippyClip
             }
         }
 
-        private void CenterWindow()
+        private Screen GetScreenToAppearOn()
         {
-            var screenHeight = SystemParameters.PrimaryScreenHeight;
-            var screenWidth = SystemParameters.PrimaryScreenWidth;
+            IntPtr handle = GetForegroundWindow();
 
-            Left = (screenWidth - Width) / 2;
-            Top = (screenHeight - Height) / 2;
+            if (handle != IntPtr.Zero)
+            {
+                return Screen.FromHandle(handle);
+            }
+            else
+            {
+                return Screen.PrimaryScreen;
+            }
         }
 
-        private void ButtonCopyItem_Click(object sender, RoutedEventArgs e)
+        private void CenterWindow()
         {
-            Button button = (Button)sender;
+            Screen screen = GetScreenToAppearOn();            
 
-            if (button.DataContext is Item item)
-            {
-                item.CopyToClipboard();
-            }
+            Left = screen.Bounds.Left + (screen.Bounds.Width - Width) / 2;
+            Top = screen.Bounds.Top + (screen.Bounds.Height - Height) / 2;
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
-            e.Handled = true;
-        }
-
-        private void ButtonPreviewItem_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = (Button)sender;
-
-            if (button.DataContext is Item item)
-            {
-                PreviewItem(item);
-            }
-        }
-
-        private void PreviewItem(Item item)
-        {
-            if (item == null)
-                return;
-
-            Console.WriteLine("Preview " + item);
+            Windows.Infrastructure.Navigate(e.Uri);
+            Hide();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -184,26 +162,48 @@ namespace ZippyClip
         {
             switch (e.Key)
             {
-                case Key.Return:
+                case Key.Enter when Keyboard.Modifiers == ModifierKeys.Control:
+                    PerformAlternativeActionOnSelectedItem();
+                    break;
+
+                case Key.Enter:
                     CopySelectedItemToClipboard();
                     HideAndPaste();
                     break;
+
                 case Key.Escape:
                     Hide();
                     break;
+
+                case Key.C when Keyboard.Modifiers == ModifierKeys.Control:
+                    CopySelectedItemToClipboard();
+                    break;
+
                 case Key.Q when Keyboard.Modifiers == ModifierKeys.Control:
-                    Application.Current.Shutdown();
+                    QuitApplication();
                     break;
+
                 case Key k when k >= Key.D1 && k <= Key.D9:
-                    if (SelectItem(k - Key.D1))
-                    {
-                        CopySelectedItemToClipboard();
-                        HideAndPaste();
-                    }
+                    SelectItemAndCopyToClipboard(k - Key.D1);
+                    HideAndPaste();
                     break;
+
                 default:
                     break;
             }
+        }
+
+        private void SelectItemAndCopyToClipboard(int itemIndex)
+        {
+            if (SelectItem(itemIndex))
+            {
+                CopySelectedItemToClipboard();
+            }
+        }
+
+        private static void QuitApplication()
+        {
+            Windows.Infrastructure.QuitApplication();
         }
 
         private bool SelectItem(int index)
@@ -216,15 +216,12 @@ namespace ZippyClip
             return true;
         }
 
-        private void Window_LostFocus(object sender, RoutedEventArgs e)
-        {
-        }
-
         private void ListBoxItem_MouseEnter(object sender, MouseEventArgs e)
         {
             if ((sender as ListBoxItem)?.Content is Item item)
-
-            ShowItemPreview(item);
+            {
+                ShowItemPreview(item);
+            }
         }
 
         private void ShowItemPreview(Item item)
@@ -248,15 +245,12 @@ namespace ZippyClip
             HideItemPreview();
         }
 
-        private void ListBoxItem_MouseLeave(object sender, MouseEventArgs e)
+        private void TheWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Console.WriteLine("ListBoxItem.MouseLeave");
-            HideItemPreview();
-        }
-
-        private void PreviewPopup_MouseEnter(object sender, MouseEventArgs e)
-        {
-            Console.WriteLine("Popup.MouseEnter");
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+            }
         }
     }
 }
