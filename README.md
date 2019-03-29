@@ -1,10 +1,10 @@
 # ZippyClip
-Clipboard History Viewer
+Clipboard History Viewer for Microsoft Windows.
 
 ## Usage
-If the app is running, make it appear on screen at any time by pressing Alt+Ctrl+V
+If the app is running, its window is usually hiden. Make it appear on screen at any time by pressing `Alt+Ctrl+V`.
 
-    Alt+Ctr+V	Show ZippyClip window
+    Alt+Ctr+V: Show ZippyClip window from anywhere in Windows
 	
 The window will present you with the list of the most recently copied items.
 Navigate the list using the arrows keys or with the mouse.
