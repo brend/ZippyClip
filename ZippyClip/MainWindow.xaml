@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZippyClip"
         xmlns:items="clr-namespace:ZippyClip.Items"
+        xmlns:commands="clr-namespace:ZippyClip.Commands"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d"
+        Name="TheWindow"
         Title="ZippyClip" Height="450" Width="450" Loaded="Window_Loaded"
         Topmost="True"
         Closing="Window_Closing"
@@ -17,6 +20,7 @@
         >
     <Window.Resources>
         <SolidColorBrush x:Key="IndexColor">#606060</SolidColorBrush>
+        
         <DataTemplate DataType="{x:Type items:ImageItem}">
             <Border Margin="3" Padding="6" Background="Lavender" CornerRadius="6" Height="64">
                 <StackPanel Orientation="Horizontal">
@@ -25,6 +29,7 @@
                 </StackPanel>
             </Border>
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type items:TextItem}">
             <Border Margin="3" Padding="6" MaxHeight="150" Background="Lavender" CornerRadius="6">
                 <StackPanel Orientation="Horizontal">
@@ -33,6 +38,7 @@
                 </StackPanel>
             </Border>
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type items:UriItem}">
             <Border Margin="3" Padding="6" MaxHeight="150" Background="Lavender" CornerRadius="6">
                 <TextBlock>
@@ -42,7 +48,14 @@
                 </TextBlock>
             </Border>
         </DataTemplate>
+        
         <BooleanToVisibilityConverter x:Key="VisibilityConverter1" />
+        
+        <ToolTip x:Key="TrayToolTip">
+            <TextBlock>Show ZippyClip</TextBlock>
+        </ToolTip>
+
+        <commands:ShowMessageCommand x:Key="WakeUpCommand" />
     </Window.Resources>
     <Border CornerRadius="6" Padding="4" Background="GhostWhite">
         <Grid>
@@ -99,6 +112,20 @@
                     </StackPanel>
                 </Border>
             </Popup>
+            
+            <!-- Taskbar icon also accepts the following attributes if needed:
+            ContextMenu="{StaticResource TrayMenu}"
+            TrayPopup="{StaticResource TrayStatusPopup}"
+            -->
+            <tb:TaskbarIcon x:Name="myNotifyIcon"
+                    Visibility="Visible"
+                    ToolTipText="Show ZippyClip"
+                    IconSource="/Resources/appicon.ico"
+                    MenuActivation="LeftOrRightClick"
+                    PopupActivation="DoubleClick"
+                    LeftClickCommand="{StaticResource WakeUpCommand}"
+                    LeftClickCommandParameter="{Binding ElementName=TheWindow}"
+                    TrayToolTip="{StaticResource TrayToolTip}" />
         </Grid>
     </Border>
 </Window>

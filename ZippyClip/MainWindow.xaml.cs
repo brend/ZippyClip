@@ -116,7 +116,7 @@ namespace ZippyClip
             };
         }
 
-        private void WakeUp()
+        public void WakeUp()
         {
             CenterWindow();
             Show();
