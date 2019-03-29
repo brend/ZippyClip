@@ -11,6 +11,9 @@ namespace ZippyClip
     using System.Windows.Controls;
     using System.Windows.Input;
     using ZippyClip.Hotkeys;
+    using Screen = System.Windows.Forms.Screen;
+
+    using static Windows.WinApi;
 
     public partial class MainWindow : Window
     {
@@ -130,13 +133,26 @@ namespace ZippyClip
             }
         }
 
+        private Screen GetScreenToAppearOn()
+        {
+            IntPtr handle = GetForegroundWindow();
+
+            if (handle != IntPtr.Zero)
+            {
+                return Screen.FromHandle(handle);
+            }
+            else
+            {
+                return Screen.PrimaryScreen;
+            }
+        }
+
         private void CenterWindow()
         {
-            var screenHeight = SystemParameters.PrimaryScreenHeight;
-            var screenWidth = SystemParameters.PrimaryScreenWidth;
+            Screen screen = GetScreenToAppearOn();            
 
-            Left = (screenWidth - Width) / 2;
-            Top = (screenHeight - Height) / 2;
+            Left = screen.Bounds.Left + (screen.Bounds.Width - Width) / 2;
+            Top = screen.Bounds.Top + (screen.Bounds.Height - Height) / 2;
         }
 
         private void ButtonCopyItem_Click(object sender, RoutedEventArgs e)
