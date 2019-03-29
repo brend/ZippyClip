@@ -62,14 +62,15 @@
             <ListBox Name="listClipboardItems" 
                  ItemsSource="{Binding Path=ClipboardHistory}" 
                  SelectedItem="{Binding Path=SelectedItem}" 
-                 
                  MouseDoubleClick="ListBox_MouseDoubleClick" 
                  HorizontalContentAlignment="Stretch"
-                 ScrollViewer.CanContentScroll="False" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                 ScrollViewer.CanContentScroll="False"
                  Background="GhostWhite" BorderBrush="{x:Null}" BorderThickness="0">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
                         <EventSetter Event="MouseEnter" Handler="ListBoxItem_MouseEnter" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
                                 <ScaleTransform x:Name="transform" />
