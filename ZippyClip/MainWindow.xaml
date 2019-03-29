@@ -14,6 +14,7 @@
         Closing="Window_Closing"
         KeyDown="Window_KeyDown"
         LostFocus="Window_LostFocus"
+        MouseDown="TheWindow_MouseDown"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -57,7 +58,7 @@
 
         <commands:ShowMessageCommand x:Key="WakeUpCommand" />
     </Window.Resources>
-    <Border CornerRadius="6" Padding="4" Background="GhostWhite">
+    <Border CornerRadius="6" Padding="4,16,4,4" Background="GhostWhite">
         <Grid>
             <ListBox Name="listClipboardItems" 
                  ItemsSource="{Binding Path=ClipboardHistory}" 

@@ -263,5 +263,10 @@ namespace ZippyClip
         {
             HideItemPreview();
         }
+
+        private void TheWindow_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 }
