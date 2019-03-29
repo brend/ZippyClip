@@ -3,8 +3,9 @@
 namespace ZippyClip.Items
 {
     using System.Windows;
+    using ZippyClip.Actions;
 
-    class TextItem : Item
+    public class TextItem : Item
     {
         public TextItem(string text)
         {
@@ -32,5 +33,7 @@ namespace ZippyClip.Items
         {
             return other is TextItem t && Text.Equals(t.Text);
         }
+
+        public override void PerformAction(IActionPerformer actionPerformer) => actionPerformer.ActivateText(this);
     }
 }

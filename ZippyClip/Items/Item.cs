@@ -6,6 +6,7 @@ namespace ZippyClip.Items
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Media.Imaging;
+    using ZippyClip.Actions;
 
     public abstract class Item: IEquatable<Item>, INotifyPropertyChanged
     {
@@ -95,5 +96,7 @@ namespace ZippyClip.Items
         public virtual string? GetPreviewText() => null;
 
         public virtual bool SupportsPreview => false;
+
+        public abstract void PerformAction(IActionPerformer actionPerformer);
     }
 }

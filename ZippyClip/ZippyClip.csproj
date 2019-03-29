@@ -64,7 +64,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Actions\AlternativeActionPerformer.cs" />
+    <Compile Include="Actions\IActionPerformer.cs" />
+    <Compile Include="Actions\CopyToClipboardAction.cs" />
     <Compile Include="Commands\WakeUpCommand.cs" />
+    <Compile Include="Windows\Infrastructure.cs" />
     <Compile Include="Windows\WinApi.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

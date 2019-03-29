@@ -4,8 +4,9 @@ namespace ZippyClip.Items
 {
     using System.Windows;
     using System.Windows.Media.Imaging;
+    using ZippyClip.Actions;
 
-    class ImageItem : Item
+    public class ImageItem : Item
     {
         public ImageItem(BitmapSource image)
         {
@@ -35,6 +36,8 @@ namespace ZippyClip.Items
         }
 
         public override BitmapSource? GetPreviewImage() => Image;
+
+        public override void PerformAction(IActionPerformer actionPerformer) => actionPerformer.ActivateImage(this);
 
         public override bool SupportsPreview => true;
     }

@@ -4,8 +4,9 @@ namespace ZippyClip.Items
 {
     using System;
     using System.Windows;
+    using ZippyClip.Actions;
 
-    class UriItem: Item
+    public class UriItem: Item
     {
         public UriItem(Uri uri)
         {
@@ -28,5 +29,7 @@ namespace ZippyClip.Items
         {
             return other is UriItem u && Uri.Equals(u.Uri);
         }
+
+        public override void PerformAction(IActionPerformer actionPerformer) => actionPerformer.ActivateHyperlink(this);
     }
 }
