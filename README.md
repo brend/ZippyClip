@@ -29,5 +29,5 @@ All items in the list can be copied to the clipboard.
 Additional actions can be performed on some kinds of items.
 Read about how to perform those alternative actions in "Usage".
 
-	Hyperlinks:	Anything classified as a hyperlink (you can recognize those items by their underlined text) 
-	                will open in the default web browser or Windows Explorer, depending on the type of the link.
+	Hyperlinks: Anything classified as a hyperlink (you can recognize those items by their underlined text) 
+	            will open in the default web browser or Windows Explorer, depending on the type of the link.
