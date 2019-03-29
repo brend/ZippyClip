@@ -35,11 +35,14 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type items:UriItem}">
             <Border Margin="3" Padding="6" MaxHeight="150" Background="Lavender" CornerRadius="6">
-                <TextBlock>
-                    <Hyperlink NavigateUri="{Binding Uri}" RequestNavigate="Hyperlink_RequestNavigate">
-                        <TextBlock Text="{Binding Uri}" />
-                    </Hyperlink>
-                </TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ListIndex}" Foreground="{StaticResource IndexColor}" FontWeight="Bold" Padding="1,0,4,0" />
+                    <TextBlock>
+                        <Hyperlink NavigateUri="{Binding Uri}" RequestNavigate="Hyperlink_RequestNavigate">
+                            <TextBlock Text="{Binding Uri}" />
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
             </Border>
         </DataTemplate>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter1" />
@@ -57,6 +60,7 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
                         <EventSetter Event="MouseEnter" Handler="ListBoxItem_MouseEnter" />
+                        <EventSetter Event="MouseLeave" Handler="ListBoxItem_MouseLeave" />
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
                                 <ScaleTransform x:Name="transform" />
@@ -84,15 +88,16 @@
                        Margin="4"
                        Foreground="{StaticResource IndexColor}"
                        FontSize="14" />
-            <Popup Name="PreviewPopup" Placement="MousePoint" 
+            <Popup Name="PreviewPopup" Placement="Left" PlacementTarget="{Binding ElementName=listClipboardItems}"
                    HorizontalOffset="-50" VerticalOffset="-50" 
-                   PopupAnimation="Scroll" AllowsTransparency="True">
+                   PopupAnimation="Scroll" AllowsTransparency="True"
+                   MouseEnter="PreviewPopup_MouseEnter">
                 <Popup.Style>
                     <Style TargetType="{x:Type Popup}">
                         <EventSetter Event="MouseLeave" Handler="Popup_MouseLeave" />
                     </Style>
                 </Popup.Style>
-                <Border Background="HotPink" CornerRadius="6" Padding="4">
+                <Border Background="LightGray" CornerRadius="6" Padding="4">
                     <StackPanel>
                         <Image Name="PreviewImage" />
                         <TextBlock Name="PreviewText" />

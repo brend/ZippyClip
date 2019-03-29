@@ -247,5 +247,16 @@ namespace ZippyClip
         {
             HideItemPreview();
         }
+
+        private void ListBoxItem_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine("ListBoxItem.MouseLeave");
+            HideItemPreview();
+        }
+
+        private void PreviewPopup_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine("Popup.MouseEnter");
+        }
     }
 }
