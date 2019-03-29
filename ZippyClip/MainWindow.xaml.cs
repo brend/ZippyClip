@@ -262,7 +262,10 @@ namespace ZippyClip
 
         private void TheWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            DragMove();
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+            }
         }
     }
 }

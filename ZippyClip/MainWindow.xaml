@@ -32,10 +32,10 @@
         
         <DataTemplate DataType="{x:Type items:TextItem}">
             <Border Margin="3" Padding="6" MaxHeight="150" Background="Lavender" CornerRadius="6">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding ListIndex}" Foreground="{StaticResource IndexColor}" FontWeight="Bold" Padding="1,0,4,0" />
-                    <TextBlock Text="{Binding Text}" TextWrapping="Wrap" />
-                </StackPanel>
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Top" Text="{Binding ListIndex}" Foreground="{StaticResource IndexColor}" FontWeight="Bold" Padding="1,0,4,0" />
+                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Top" Text="{Binding Text}" TextWrapping="Wrap" />
+                </DockPanel>
             </Border>
         </DataTemplate>
         
@@ -91,6 +91,7 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
+            
             <TextBlock Text="Add items to the list by copying text or images in other applications" 
                        Visibility="{Binding Path=HistoryIsEmpty, Converter={StaticResource VisibilityConverter1}}"
                        Grid.Column="0" 
@@ -98,6 +99,7 @@
                        Margin="4"
                        Foreground="{StaticResource IndexColor}"
                        FontSize="14" />
+            
             <Popup Name="PreviewPopup" Placement="MousePoint" 
                    HorizontalOffset="-50" VerticalOffset="-50" 
                    PopupAnimation="Scroll" AllowsTransparency="True">
