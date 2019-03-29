@@ -137,12 +137,19 @@ namespace ZippyClip
             }
         }
 
+        protected override void OnLocationChanged(EventArgs e)
+        {
+            base.OnLocationChanged(e);
+
+            Console.WriteLine("X = {0}, Y = {1}", Left, Top);
+        }
+
         private void CenterWindow()
         {
             Screen screen = GetScreenToAppearOn();            
 
-            Left = screen.Bounds.Left + (screen.Bounds.Width - Width) / 2;
-            Top = screen.Bounds.Top + (screen.Bounds.Height - Height) / 2;
+            Left = screen.WorkingArea.Left + (screen.WorkingArea.Width - Width) / 2;
+            Top = screen.WorkingArea.Top + (screen.WorkingArea.Height - Height) / 2;
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
