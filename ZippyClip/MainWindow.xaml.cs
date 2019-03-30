@@ -10,6 +10,7 @@ namespace ZippyClip
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using System.Windows.Media;
     using ZippyClip.Actions;
     using ZippyClip.Hotkeys;
     using static Windows.WinApi;
@@ -137,6 +138,21 @@ namespace ZippyClip
             }
         }
 
+        private Rect GetResoultionSafeWorkingArea(Screen screen)
+        {
+            PresentationSource presentationSource = PresentationSource.FromVisual(Application.Current.MainWindow);
+            Matrix matrix = presentationSource.CompositionTarget.TransformToDevice;
+            double widthFactor = matrix.M22,
+                heightFactor = matrix.M11;
+            System.Drawing.Rectangle workingArea = screen.WorkingArea;
+
+            return new Rect(
+                workingArea.Left / widthFactor, 
+                workingArea.Top / heightFactor,
+                workingArea.Width / widthFactor,
+                workingArea.Height / heightFactor);
+        }
+
         protected override void OnLocationChanged(EventArgs e)
         {
             base.OnLocationChanged(e);
@@ -146,10 +162,11 @@ namespace ZippyClip
 
         private void CenterWindow()
         {
-            Screen screen = GetScreenToAppearOn();            
+            Screen screen = GetScreenToAppearOn();
+            Rect bounds = GetResoultionSafeWorkingArea(screen);
 
-            Left = screen.WorkingArea.Left + (screen.WorkingArea.Width - Width) / 2;
-            Top = screen.WorkingArea.Top + (screen.WorkingArea.Height - Height) / 2;
+            Left = bounds.Left + (bounds.Width - Width) / 2;
+            Top = bounds.Top + (bounds.Height - Height) / 2;
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
