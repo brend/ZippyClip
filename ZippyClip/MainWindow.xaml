@@ -57,7 +57,7 @@
 
         <commands:ShowMessageCommand x:Key="WakeUpCommand" />
     </Window.Resources>
-    <Border CornerRadius="6" Padding="4,16,4,4" Background="GhostWhite">
+    <Border CornerRadius="6" Padding="4,16,4,4" Background="LightGray">
         <Grid>
             <ListBox Name="listClipboardItems" 
                  ItemsSource="{Binding Path=ClipboardHistory}" 
