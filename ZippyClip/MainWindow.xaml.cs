@@ -207,8 +207,9 @@ namespace ZippyClip
                     QuitApplication();
                     break;
 
-                case Key k when k >= Key.D1 && k <= Key.D9:
-                    SelectItemAndCopyToClipboard(k - Key.D1);
+                case Key k when k >= Key.D1 && k <= Key.D9
+                             || k >= Key.NumPad1 && k <= Key.NumPad9:   // Issue 20: Support for numeric keypad
+                    SelectItemAndCopyToClipboard(k - (k >= Key.NumPad1 && k <= Key.NumPad9 ? Key.NumPad1 : Key.D1));
                     HideAndPaste();
                     break;
 
