@@ -23,11 +23,15 @@ namespace ZippyClip
             InitializeComponent();
 
             DataContext = this;
+            DeleteItemCommand = new Commands.DeleteItemCommand(this);
         }
 
         public IActionPerformer CopyToClipboardAction { get; } = new CopyToClipboardAction();
 
         public IActionPerformer AlternativeActionPerformer { get; } = new AlternativeActionPerformer();
+
+        public ICommand DeleteItemCommand { get; } 
+
 
         private void ClipboardNotification_ClipboardUpdate(object sender, EventArgs e)
         {
@@ -276,6 +280,11 @@ namespace ZippyClip
             {
                 DragMove();
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Jetzt.");
         }
     }
 }
