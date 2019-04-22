@@ -32,13 +32,15 @@
         
         <DataTemplate DataType="{x:Type items:TextItem}">
             <Border Margin="3" Padding="6" MaxHeight="150" Background="Lavender" CornerRadius="6">
-                <DockPanel>
+                <DockPanel LastChildFill="False">
                     <TextBlock DockPanel.Dock="Left" VerticalAlignment="Top" Text="{Binding ListIndex}" Foreground="{StaticResource IndexColor}" FontWeight="Bold" Padding="1,0,4,0" />
                     <TextBlock DockPanel.Dock="Left" VerticalAlignment="Top" Text="{Binding Text}" TextWrapping="Wrap" />
                     <Button Height="16" 
                             Width="16" 
                             CommandParameter="{Binding}" 
-                            Command="{Binding Path=DeleteItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" >
+                            Command="{Binding Path=DeleteItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                            DockPanel.Dock="Right" 
+                            VerticalAlignment="Top">
                       <Button.Template>
                         <ControlTemplate>
                           <Image Source="Resources/delete.png"></Image>
