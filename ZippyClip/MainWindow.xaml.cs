@@ -79,6 +79,12 @@ namespace ZippyClip
             SelectedItem?.PerformAction(AlternativeActionPerformer);
         }
 
+        private void DeleteSelectedItem()
+        {
+            if (SelectedItem != null)
+                DeleteItemCommand.Execute(SelectedItem); 
+        }
+
         private void HideAndPaste()
         {
             Hide();
@@ -201,6 +207,10 @@ namespace ZippyClip
 
                 case Key.Escape:
                     Hide();
+                    break;
+
+                case Key.Delete:
+                    DeleteSelectedItem();
                     break;
 
                 case Key.C when Keyboard.Modifiers == ModifierKeys.Control:
