@@ -291,10 +291,5 @@ namespace ZippyClip
                 DragMove();
             }
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Jetzt.");
-        }
     }
 }
