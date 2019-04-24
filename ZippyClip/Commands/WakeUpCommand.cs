@@ -3,8 +3,10 @@
     using System;
     using System.Windows.Input;
 
-    public sealed class ShowMessageCommand : ICommand
+    public class ShowMessageCommand : ICommand
     {
+        public event EventHandler CanExecuteChanged;
+
         public void Execute(object parameter)
         {
             if (parameter is MainWindow window)
@@ -18,6 +20,9 @@
             return true;
         }
 
-        public event EventHandler CanExecuteChanged;
+        protected void OnCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

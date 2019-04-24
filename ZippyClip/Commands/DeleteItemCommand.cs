@@ -32,5 +32,10 @@ namespace ZippyClip.Commands
                 Parent.ClipboardHistory.Remove(item);
             }
         }
+
+        protected void OnCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

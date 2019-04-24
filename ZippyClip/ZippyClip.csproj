@@ -69,6 +69,7 @@
     <Compile Include="Actions\IActionPerformer.cs" />
     <Compile Include="Actions\CopyToClipboardAction.cs" />
     <Compile Include="Commands\DeleteItemCommand.cs" />
+    <Compile Include="Commands\PauseCommand.cs" />
     <Compile Include="Commands\WakeUpCommand.cs" />
     <Compile Include="Windows\Infrastructure.cs" />
     <Compile Include="Windows\WinApi.cs" />

@@ -5,7 +5,7 @@ namespace ZippyClip
     using Items;
     using System;
     using System.Collections.ObjectModel;
-    using System.Diagnostics;
+    using System.ComponentModel;
     using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
@@ -16,14 +16,19 @@ namespace ZippyClip
     using static Windows.WinApi;
     using Screen = System.Windows.Forms.Screen;
 
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanging, INotifyPropertyChanged
     {
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public MainWindow()
         {
             InitializeComponent();
 
             DataContext = this;
             DeleteItemCommand = new Commands.DeleteItemCommand(this);
+            PauseCommand = new Commands.PauseCommand();
         }
 
         public IActionPerformer CopyToClipboardAction { get; } = new CopyToClipboardAction();
@@ -32,6 +37,7 @@ namespace ZippyClip
 
         public ICommand DeleteItemCommand { get; } 
 
+        public ICommand PauseCommand { get; }
 
         private void ClipboardNotification_ClipboardUpdate(object sender, EventArgs e)
         {
@@ -40,6 +46,9 @@ namespace ZippyClip
 
         private void PutClipboardContentsInList()
         {
+            if (Paused)
+                return;
+
             ClipboardItems.PushClipboardContents();
 
             for (int i = 0; i < ClipboardItems.Items.Count; ++i)
@@ -290,6 +299,43 @@ namespace ZippyClip
             {
                 DragMove();
             }
+        }
+
+        private bool Paused { get; set; }
+
+        public void TogglePaused()
+        {
+            Paused = !Paused;
+            PauseCommandHeader = Paused ? "Unpause" : "Pause";
+        }
+
+        private string pauseCommandHeader = "Pause";
+        public string PauseCommandHeader
+        {
+            get => pauseCommandHeader;
+            set
+            {
+                OnPropertyChanging(new PropertyChangingEventArgs(nameof(PauseCommandHeader)));
+
+                pauseCommandHeader = value;
+
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(PauseCommandHeader)));
+            }
+        }
+
+        protected void OnPropertyChanging(PropertyChangingEventArgs e)
+        {
+            PropertyChanging?.Invoke(this, e);
+        }
+
+        protected void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            PropertyChanged?.Invoke(this, e);
+        }
+
+        private void PauseMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            PauseCommand.Execute(this);
         }
     }
 }

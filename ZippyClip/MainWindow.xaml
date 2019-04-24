@@ -166,7 +166,14 @@
                     PopupActivation="DoubleClick"
                     LeftClickCommand="{StaticResource WakeUpCommand}"
                     LeftClickCommandParameter="{Binding ElementName=TheWindow}"
-                    TrayToolTip="{StaticResource TrayToolTip}" />
+                    TrayToolTip="{StaticResource TrayToolTip}">
+                <tb:TaskbarIcon.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Click="PauseMenuItem_Click"
+                                  Header="Pause/Unpause" />
+                    </ContextMenu>
+                </tb:TaskbarIcon.ContextMenu>
+            </tb:TaskbarIcon>
         </Grid>
     </Border>
 </Window>
