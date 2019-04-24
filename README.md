@@ -18,10 +18,12 @@ Navigate the list using the arrows keys or with the mouse.
 	Strg+Enter:          Perform alternative action if available
 	Esc:                 Close ZippyClip window
 	Ctrl+Q:              Quit ZippyClip
+	Ctrl+,:				 Show settings
 	
-Performing any of the above actions will also close the ZippyClip window.
+Performing any of the above actions will also close the ZippyClip window, except for accessing the settings.
 
-ZippyClip comes with a try icon that will make the window appear when clicked.
+ZippyClip comes with a try icon that will make the window appear when clicked. When right-clicked, it will 
+display a context menu with commands that include pausing, settings.
 
 ## Alternative Actions
 All items in the list can be copied to the clipboard. 
@@ -29,5 +31,5 @@ All items in the list can be copied to the clipboard.
 Additional actions can be performed on some kinds of items.
 Read about how to perform those alternative actions in "Usage".
 
-	Hyperlinks: Anything classified as a hyperlink (you can recognize those items by their underlined text) 
-	            will open in the default web browser or Windows Explorer, depending on the type of the link.
+Hyperlinks: Anything classified as a hyperlink (you can recognize those items by their underlined text) 
+            will open in the default web browser or Windows Explorer, depending on the type of the link.

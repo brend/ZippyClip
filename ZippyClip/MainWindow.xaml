@@ -20,7 +20,7 @@
         >
     <Window.Resources>
         <SolidColorBrush x:Key="IndexColor">#606060</SolidColorBrush>
-        
+
         <DataTemplate DataType="{x:Type items:ImageItem}">
             <Border Margin="3" Padding="6" Background="Lavender" CornerRadius="6" Height="64">
                 <DockPanel LastChildFill="False">
@@ -32,16 +32,16 @@
                             Command="{Binding Path=DeleteItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                             DockPanel.Dock="Right"
                             VerticalAlignment="Top">
-                      <Button.Template>
-                        <ControlTemplate>
-                          <Image Source="Resources/delete.png"></Image>
-                        </ControlTemplate>
-                      </Button.Template>
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image Source="Resources/delete.png"></Image>
+                            </ControlTemplate>
+                        </Button.Template>
                     </Button>
                 </DockPanel>
             </Border>
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type items:TextItem}">
             <Border Margin="3" Padding="6" MaxHeight="150" Background="Lavender" CornerRadius="6">
                 <DockPanel LastChildFill="False">
@@ -53,50 +53,65 @@
                             Command="{Binding Path=DeleteItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                             DockPanel.Dock="Right" 
                             VerticalAlignment="Top">
-                      <Button.Template>
-                        <ControlTemplate>
-                          <Image Source="Resources/delete.png"></Image>
-                        </ControlTemplate>
-                      </Button.Template>
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image Source="Resources/delete.png"></Image>
+                            </ControlTemplate>
+                        </Button.Template>
                     </Button>
                 </DockPanel>
             </Border>
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type items:UriItem}">
             <Border Margin="3" Padding="6" MaxHeight="150" Background="Lavender" CornerRadius="6">
-              <DockPanel LastChildFill="False">
-                <TextBlock DockPanel.Dock="Left" VerticalAlignment="Top" Text="{Binding ListIndex}" Foreground="{StaticResource IndexColor}" FontWeight="Bold" Padding="1,0,4,0" />
-                <TextBlock DockPanel.Dock="Left">
+                <DockPanel LastChildFill="False">
+                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Top" Text="{Binding ListIndex}" Foreground="{StaticResource IndexColor}" FontWeight="Bold" Padding="1,0,4,0" />
+                    <TextBlock DockPanel.Dock="Left">
                   <Hyperlink NavigateUri="{Binding Uri}" RequestNavigate="Hyperlink_RequestNavigate">
                     <TextBlock Text="{Binding Uri}" />
                   </Hyperlink>
                 </TextBlock>
-                <Button Height="16"
+                    <Button Height="16"
                         Width="16"
                         CommandParameter="{Binding}"
                         Command="{Binding Path=DeleteItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                         DockPanel.Dock="Right"
                         VerticalAlignment="Top">
-                  <Button.Template>
-                    <ControlTemplate>
-                      <Image Source="Resources/delete.png"></Image>
-                    </ControlTemplate>
-                  </Button.Template>
-                </Button>                
-              </DockPanel>
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image Source="Resources/delete.png"></Image>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </DockPanel>
             </Border>
         </DataTemplate>
-        
+
         <BooleanToVisibilityConverter x:Key="VisibilityConverter1" />
-        
+
         <ToolTip x:Key="TrayToolTip">
             <TextBlock>Show ZippyClip</TextBlock>
         </ToolTip>
 
         <commands:ShowMessageCommand x:Key="WakeUpCommand" />
+        <Storyboard x:Key="ShowSettingsStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="170"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="HideSettingsStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="border">
+                <SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="border">
+                <SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Window.Resources>
-    
     <!-- Window content -->
     <Border CornerRadius="6" Padding="4,16,4,4" Background="LightGray">
         <Grid>
@@ -107,7 +122,7 @@
                  HorizontalContentAlignment="Stretch"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                  ScrollViewer.CanContentScroll="False"
-                 Background="GhostWhite" BorderBrush="{x:Null}" BorderThickness="0">
+                 Background="GhostWhite" BorderBrush="{x:Null}" BorderThickness="0" d:IsHidden="True">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
                         <EventSetter Event="MouseEnter" Handler="ListBoxItem_MouseEnter" />
@@ -134,7 +149,7 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-            
+
             <!-- Empty list placeholder -->
             <TextBlock Text="Add items to the list by copying text or images in other applications" 
                        Visibility="{Binding Path=HistoryIsEmpty, Converter={StaticResource VisibilityConverter1}}"
@@ -142,11 +157,11 @@
                        Grid.Row="0" 
                        Margin="4"
                        Foreground="{StaticResource IndexColor}"
-                       FontSize="14" />
-            
+                       FontSize="14" d:IsHidden="True" />
+
             <!-- Preview popup -->
             <Popup Name="PreviewPopup" PlacementTarget="{Binding ElementName=TheWindow}" Placement="Right" 
-                   PopupAnimation="Slide" AllowsTransparency="True">
+                   PopupAnimation="Slide" AllowsTransparency="True" d:IsHidden="True">
                 <Border Background="LightGray" CornerRadius="6" Padding="4">
                     <StackPanel>
                         <Image Name="PreviewImage" />
@@ -154,7 +169,7 @@
                     </StackPanel>
                 </Border>
             </Popup>
-            
+
             <!-- Taskbar icon also accepts the following attributes if needed:
             ContextMenu="{StaticResource TrayMenu}"
             TrayPopup="{StaticResource TrayStatusPopup}"
@@ -167,14 +182,41 @@
                     PopupActivation="DoubleClick"
                     LeftClickCommand="{StaticResource WakeUpCommand}"
                     LeftClickCommandParameter="{Binding ElementName=TheWindow}"
-                    TrayToolTip="{StaticResource TrayToolTip}">
+                    TrayToolTip="{StaticResource TrayToolTip}" d:IsHidden="True">
                 <tb:TaskbarIcon.ContextMenu>
                     <ContextMenu>
                         <MenuItem Click="PauseMenuItem_Click"
                                   Header="Pause/Unpause" />
+                        <MenuItem Click="SettingsMenuItem_Click" Header="Settings" />
+                        <Separator />
+                        <MenuItem Click="QuitMenuItem_Click" Header="Quit" />
                     </ContextMenu>
                 </tb:TaskbarIcon.ContextMenu>
             </tb:TaskbarIcon>
+
+            <!-- Settings panel -->
+            <Border x:Name="border" BorderThickness="1" BorderBrush="DarkGray" Background="LightGray" Margin="-171,0,447,0" RenderTransformOrigin="0.5,0.5">
+                <Border.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Border.RenderTransform>
+                <StackPanel x:Name="stackPanel">
+                    <StackPanel.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </StackPanel.RenderTransform>
+                    <CheckBox>This is a setting</CheckBox>
+                    <CheckBox>This is another setting</CheckBox>
+                </StackPanel>
+            </Border>
         </Grid>
     </Border>
 </Window>

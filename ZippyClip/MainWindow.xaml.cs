@@ -11,6 +11,7 @@ namespace ZippyClip
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;
+    using System.Windows.Media.Animation;
     using ZippyClip.Actions;
     using ZippyClip.Hotkeys;
     using static Windows.WinApi;
@@ -236,9 +237,41 @@ namespace ZippyClip
                     HideAndPaste();
                     break;
 
+                case Key.OemComma when Keyboard.Modifiers == ModifierKeys.Control:
+                    ToggleSettings();
+                    break;
+
                 default:
                     break;
             }
+        }
+
+        private bool SettingsVisible { get; set; }
+
+        private void ToggleSettings(bool mustShow = false)
+        {
+            WakeUp();
+            RunSettingsStoryboard(mustShow);
+
+            SettingsVisible = mustShow ? true : !SettingsVisible;
+        }
+
+        private void RunSettingsStoryboard(bool mustShow = false)
+        {
+            string storyboardName;
+
+            if (mustShow)
+            {
+                storyboardName = "ShowSettingsStoryboard";
+            }
+            else
+            {
+                storyboardName = SettingsVisible ? "HideSettingsStoryboard" : "ShowSettingsStoryboard";
+            }
+
+            var storyboard = Resources[storyboardName] as Storyboard;
+
+            storyboard?.Begin();
         }
 
         private void SelectItemAndCopyToClipboard(int itemIndex)
@@ -338,10 +371,20 @@ namespace ZippyClip
             PauseCommand.Execute(this);
         }
 
+        private void SettingsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleSettings(mustShow: true);
+        }
+
         private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             CopySelectedItemToClipboard();
             HideAndPaste();
+        }
+
+        private void QuitMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            QuitApplication();
         }
     }
 }
