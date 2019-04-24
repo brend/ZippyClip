@@ -18,7 +18,7 @@ Navigate the list using the arrows keys or with the mouse.
 	Strg+Enter:          Perform alternative action if available
 	Esc:                 Close ZippyClip window
 	Ctrl+Q:              Quit ZippyClip
-	Ctrl+,:				 Show settings
+	Ctrl+,:              Show settings
 	
 Performing any of the above actions will also close the ZippyClip window, except for accessing the settings.
 
