@@ -263,6 +263,11 @@ namespace ZippyClip
             }
         }
 
+        private void ListBoxItem_MouseLeave(object sender, MouseEventArgs e)
+        {
+            HideItemPreview();
+        }
+
         private void ShowItemPreview(Item item)
         {
             if (!item.SupportsPreview)
@@ -277,11 +282,6 @@ namespace ZippyClip
         private void HideItemPreview()
         {
             PreviewPopup.IsOpen = false;
-        }
-
-        private void Popup_MouseLeave(object sender, MouseEventArgs e)
-        {
-            HideItemPreview();
         }
 
         private void TheWindow_MouseDown(object sender, MouseButtonEventArgs e)
