@@ -68,6 +68,7 @@
     <Compile Include="Actions\AlternativeActionPerformer.cs" />
     <Compile Include="Actions\IActionPerformer.cs" />
     <Compile Include="Actions\CopyToClipboardAction.cs" />
+    <Compile Include="Commands\DeleteItemCommand.cs" />
     <Compile Include="Commands\WakeUpCommand.cs" />
     <Compile Include="Windows\Infrastructure.cs" />
     <Compile Include="Windows\WinApi.cs" />
@@ -137,6 +138,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\appicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
