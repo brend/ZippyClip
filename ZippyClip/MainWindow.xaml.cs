@@ -23,11 +23,15 @@ namespace ZippyClip
             InitializeComponent();
 
             DataContext = this;
+            DeleteItemCommand = new Commands.DeleteItemCommand(this);
         }
 
         public IActionPerformer CopyToClipboardAction { get; } = new CopyToClipboardAction();
 
         public IActionPerformer AlternativeActionPerformer { get; } = new AlternativeActionPerformer();
+
+        public ICommand DeleteItemCommand { get; } 
+
 
         private void ClipboardNotification_ClipboardUpdate(object sender, EventArgs e)
         {
@@ -73,6 +77,12 @@ namespace ZippyClip
         private void PerformAlternativeActionOnSelectedItem()
         {
             SelectedItem?.PerformAction(AlternativeActionPerformer);
+        }
+
+        private void DeleteSelectedItem()
+        {
+            if (SelectedItem != null)
+                DeleteItemCommand.Execute(SelectedItem); 
         }
 
         private void HideAndPaste()
@@ -197,6 +207,10 @@ namespace ZippyClip
 
                 case Key.Escape:
                     Hide();
+                    break;
+
+                case Key.Delete:
+                    DeleteSelectedItem();
                     break;
 
                 case Key.C when Keyboard.Modifiers == ModifierKeys.Control:
