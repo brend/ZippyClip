@@ -9,16 +9,17 @@ If the app is running, its window is usually hiden. Make it appear on screen at 
 The window will present you with the list of the most recently copied items.
 Navigate the list using the arrows keys or with the mouse.
 
-	Numbers 1 through 9: Copy the n-th most recent item to the clipboard 
-	                     (see index numbers to the left of the item)
-	Strg+C:              Copy selected item to clipboard
-	Enter:               Copy selected item to clipboard; 
-	                     close ZippyClip window;
-			     paste clipboard contents into foreground window
-	Strg+Enter:          Perform alternative action if available
-	Esc:                 Close ZippyClip window
-	Ctrl+Q:              Quit ZippyClip
-	Ctrl+,:				 Show settings
+	Numbers 1:  Copy the n-th most recent item to the clipboard 
+	through 9   (see index numbers to the left of the item)
+	Strg+C:     Copy selected item to clipboard
+	Enter:      Copy selected item to clipboard; 
+	            close ZippyClip window;
+	            paste clipboard contents into foreground window
+	Strg+Enter: Perform alternative action if available
+	Del:        Delete selected item
+	Esc:        Close ZippyClip window
+	Ctrl+Q:     Quit ZippyClip
+	Ctrl+,:     Show settings
 	
 Performing any of the above actions will also close the ZippyClip window, except for accessing the settings.
 
