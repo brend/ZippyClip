@@ -4,6 +4,7 @@ namespace ZippyClip.Items
 {
     using System;
     using System.ComponentModel;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Media.Imaging;
     using ZippyClip.Actions;
@@ -38,10 +39,6 @@ namespace ZippyClip.Items
 
             if (Clipboard.ContainsImage())
             {
-                // TODO: Catch exception:
-                /*
-                 * System.Runtime.InteropServices.COMException: "OpenClipboard fehlgeschlagen (Ausnahme von HRESULT: 0x800401D0 (CLIPBRD_E_CANT_OPEN))"
-                 */
                 try
                 {
                     return Make(Clipboard.GetImage());
@@ -54,12 +51,21 @@ namespace ZippyClip.Items
                 }
             }
 
+            if (Clipboard.ContainsFileDropList())
+            {
+                var files = Clipboard.GetFileDropList().Cast<string>().ToArray();
+                var filesText = string.Join(Environment.NewLine, files);
+                var tryToParseUri = files.Length == 1;
+
+                return Make(filesText, tryToParseUri);
+            }
+
             return null;
         }
 
-        private static Item Make(string text)
+        private static Item Make(string text, bool tryToParseUri = true)
         {
-            if (Uri.TryCreate(text, UriKind.Absolute, out Uri uri))
+            if (tryToParseUri && Uri.TryCreate(text, UriKind.Absolute, out Uri uri))
             {
                 return new UriItem(uri);
             }
