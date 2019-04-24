@@ -337,5 +337,11 @@ namespace ZippyClip
         {
             PauseCommand.Execute(this);
         }
+
+        private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            CopySelectedItemToClipboard();
+            HideAndPaste();
+        }
     }
 }

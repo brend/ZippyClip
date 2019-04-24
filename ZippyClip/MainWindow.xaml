@@ -112,6 +112,7 @@
                     <Style TargetType="{x:Type ListBoxItem}">
                         <EventSetter Event="MouseEnter" Handler="ListBoxItem_MouseEnter" />
                         <EventSetter Event="MouseLeave" Handler="ListBoxItem_MouseLeave" />
+                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
