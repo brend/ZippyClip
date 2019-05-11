@@ -130,8 +130,17 @@ namespace ZippyClip
         public void WakeUp()
         {
             CenterWindow();
+            ScrollListToTop();
             Show();
             FocusOnList();
+        }
+
+        private void ScrollListToTop()
+        {
+            if (listClipboardItems.Items.Count > 0)
+            {
+                listClipboardItems.ScrollIntoView(listClipboardItems.Items[0]);
+            }
         }
 
         private void FocusOnList()
